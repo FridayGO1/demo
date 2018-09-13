@@ -12,6 +12,7 @@
 import Item from './Item.vue'
 export default {
   // 声明接收属性:这个属性就会成为组件对象的属性
+  // 声明接收属性:这个属性就会成为组件对象的属性
   props: ['comments', 'deteleComment'],
   components: {
     Item
