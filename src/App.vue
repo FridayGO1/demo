@@ -1,67 +1,53 @@
 <template>
-  <div id="app">
-    <header class="site-header jumbotron">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12">
-            <h1>请发表对Vue的评论</h1>
-          </div>
-        </div>
+    <div class="todo-container">
+      <div class="todo-wrap">
+          <TodoHeader :addTodo="addTodo"/>
+          <TodoList :todos="todos" :deteleTodo="deteleTodo"/>
+          <TodoFooter :todos="todos" :deteleCompleteTodos="deteleCompleteTodos" :selectAllTodos="selectAllTodos"/>
       </div>
-    </header>
-    <div class="container">
-      <Add :addComment="addComment"/>
-      <List :comments="comments" :deteleComment="deteleComment"/>
     </div>
-  </div>
 </template>
 
 <script>
-import Add from './components/Add.vue'
-import List from './components/List.vue'
+import TodoHeader from './components/TodoHeader'
+import TodoList from './components/TodoList'
+import TodoFooter from './components/TodoFooter'
 export default {
   data () {
     return {
-      comments: [// 数据在哪个组件，更新数据的行为就应该定义在哪个组件
-        {
-          name: 'BOB',
-          content: 'vue还不错'
-        },
-        {
-          name: 'Cat',
-          content: 'vue so easy'
-        },
-        {
-          name: 'BZ',
-          content: 'vue soso'
-        }
+      todos: [
+        {title: '吃饭', complete: false},
+        {title: '睡觉', complete: false},
+        {title: '打豆豆', complete: false}
       ]
     }
   },
   methods: {
-    // 添加评论
-    addComment (comment) {
-      this.comments.unshift(comment)
+    addTodo (todo) {
+      this.todos.unshift(todo)
     },
-    // 删除指定下标的评论
-    deteleComment (index) {
-      this.comments.splice(index,1)
+    deteleTodo (index) {
+      this.todos.splice(index, 1)
+    },
+    deteleCompleteTodos () {
+      this.todos = this.todos.filter(todo => !todo.complete)
+    },
+    selectAllTodos (check) {
+      this.todos.forEach(todo => todo.complete = check)
     }
   },
-  components: {
-    Add,
-    List
-  }
+  components: {TodoFooter, TodoList, TodoHeader}
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+.todo-container{
+  width: 600px;
+  margin: 0 auto;
 }
+  .todo-container .todo-wrap{
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
 </style>
