@@ -21,7 +21,7 @@ export default {
     completeSize () {
       return this.todos.reduce((preTotal, todo) => preTotal + (todo.complete ? 1 : 0), 0)
     },
-    isAllChheck: {
+    isAllCheck: {
       get () {
         return this.complete === this.todos.length && this.complete > 0
       },

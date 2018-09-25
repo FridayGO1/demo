@@ -1,35 +1,23 @@
 <template>
     <div class="todo-container">
       <div class="todo-wrap">
-          <!--<TodoHeader @addTodo="addTodo"/>--><!--绑定监听-->
-          <TodoHeader ref="header"/>
-          <TodoList :todos="todos"/>
+          <TodoHeader :addTodo="addTodo"/>
+          <TodoList :todos="todos" :deteleTodo="deteleTodo"/>
           <TodoFooter :todos="todos" :deteleCompleteTodos="deteleCompleteTodos" :selectAllTodos="selectAllTodos"/>
       </div>
     </div>
 </template>
 
 <script>
-import PubSub from 'pubsub-js'
 import TodoHeader from './components/TodoHeader'
 import TodoList from './components/TodoList'
 import TodoFooter from './components/TodoFooter'
-import storageUtil from './storageUtil.js'
 export default {
   data () {
     return {
       // 从localStorage读取todos
-      todos: storageUtil.readTodos()
+      todos: JSON.parse(window.localStorage.getItem('todos_key') || '[]')
     }
-  },
-  mounted () { // 执行异步代码
-    // 给<TodoHeader/>绑定addTodo事件监听
-    this.$ref.header.$on('addTodo', this.addTodo)
-
-    // 订阅消息
-    PubSub.subscribe('delete', (msg, index) => {
-      this.deleteTodo(index)
-    })
   },
   methods: {
     addTodo (todo) {
@@ -50,8 +38,7 @@ export default {
       deep: true, // 深度监视
       handler: function (value) {
         // 将todos最新的值的json数据，保存到localStorage
-        //window.localStorage.setItem('todos_key', JSON.stringify(value))
-        storageUtil.saveTodos(value)
+        window.localStorage.setItem('todos_key', JSON.stringify(value))
       }
     }
   },
